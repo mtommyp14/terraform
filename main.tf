@@ -7,13 +7,7 @@ terraform {
   }
 }
 
-provider "aws" {
-  region  = "us-east-2"
-  profile = "tom"
-  #   access_key = "ASIAZWVGQS3MELC2NXY7"
-  #   secret_key = "Zo6wYPPhqwCgJenSWqLhxPUeAkStAeXFFnVCMjUR"
-}
-
+provider "aws" {}
 
 resource "aws_instance" "my-web-serve" {
   ami                    = "ami-0915bcb5fa77e4892" //amazon linux
@@ -21,12 +15,14 @@ resource "aws_instance" "my-web-serve" {
   key_name               = "terraform-keypair"
   vpc_security_group_ids = [aws_security_group.web.id]
   user_data              = <<EOF
-#!/bin.bash
-yum -y update
-yum -y install httpd
-echo "<em style='colour:blue;'> The page are served from: 'hostname-f' </em>" /var/www/html/index.html
-service httpd start
-chkconfig httpd on
+#!/bin/bash
+#install httpd
+yum update -y
+yum install -y httpd.x86_64
+systemctl start httpd.service
+systemctl enable httpd.service
+echo "Hello from $(hostname -f)" > /var/www/html/index.html
+   
 EOF
   tags = {
     Name  = "Webserver Built by Terraform"
