@@ -7,7 +7,10 @@ terraform {
   }
 }
 
-provider "aws" {}
+provider "aws" {
+  region  = "us-east-1"
+  profile = "tom"
+}
 
 resource "aws_instance" "my-web-serve" {
   ami                    = "ami-0915bcb5fa77e4892" //amazon linux
