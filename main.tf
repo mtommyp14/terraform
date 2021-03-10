@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "my-web-serve" {
-  ami                    = "ami-0915bcb5fa77e4892" //amazon linux
+  ami                    = "ami-042e8287309f5df03" //linux versi 20
   instance_type          = "t2.micro"
   key_name               = "terraform-keypair"
   vpc_security_group_ids = [aws_security_group.web.id]
@@ -24,9 +24,9 @@ yum update -y
 yum install -y httpd.x86_64
 systemctl start httpd.service
 systemctl enable httpd.service
-echo "Hello from $(hostname -f)" > /var/www/html/index.html
-   
+echo "Hello from $(hostname -f)" > /var/www/html/index.html 
 EOF
+
   tags = {
     Name  = "Webserver Built by Terraform"
     owner = "Tommy"
